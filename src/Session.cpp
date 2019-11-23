@@ -1,34 +1,32 @@
-#ifndef SESSION_H_
-#define SESSION_H_
+
 
 #include <vector>
 #include <unordered_map>
 #include <string>
-#include "Action.h"
-#include <json.h>
-#include <fstream>
 
+#include "../Include/Action.h"
+#include "../Include/Session.h"
+#include "../Include/User.h"
 
 class User;
 class Watchable;
 
-class Session{
-public:
-    Session(const std::string &configFilePath){
-        using json = nlohmann::json;
-        std::ifstream i(configFilePath);
-    };
-    ~Session();
-    void start(){
-        std::cout << "Hello, World!" << std::endl;
+Session::Session(const std::string &configFilePath) {
+
+}
+
+void Session::start() {
+    std::cout<<"SPLFLIX is now on!"<<std::endl;
+    activeUser = new LengthRecommenderUser("default");//should do call to destractor
+    userMap.insert({activeUser->getName(), activeUser});//put in the table
+    // not done yet
+}
 
 
-
-    }
-private:
-    std::vector<Watchable*> content;
-    std::vector<BaseAction*> actionsLog;
-    std::unordered_map<std::string,User*> userMap;
-    User* activeUser;
+/*
+std::vector<Watchable*> content;// to here mesharsherim the movies + json
+std::vector<BaseAction*> actionsLog;
+std::unordered_map<std::string,User*> userMap;// list of users
+User* activeUser;// the active user, when we do func start - default.
 };
-#endif
+#endif*/

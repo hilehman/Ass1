@@ -1,85 +1,36 @@
-#ifndef ACTION_H_
-#define ACTION_H_
-
+#include "../Include/Action.h"
 #include <string>
 #include <iostream>
+#define ENUM_TO_STR(ENUM) std::string(#ENUM) //check that this is a valid solution
 
-class Session;
+void BaseAction::complete(){
+    status = ActionStatus::COMPLETED;
+}
 
-enum ActionStatus{
-    PENDING, COMPLETED, ERROR
+void BaseAction::error(const std::string& errorMsg){
+    status = ActionStatus::ERROR;
+    std::cout<<"Error - " << &errorMsg << std::endl;//to check if to print with & or with out.
+}
+
+std::string BaseAction::getErrorMsg() const{
+    return errorMsg;
+};
+
+ActionStatus BaseAction::getStatus() const{
+    return status;
 };
 
 
-class BaseAction{
-public:
-    BaseAction();
-    ActionStatus getStatus() const;
-    virtual void act(Session& sess)=0;
-    virtual std::string toString() const=0;
-protected:
-    void complete();
-    void error(const std::string& errorMsg);
-    std::string getErrorMsg() const;
-private:
-    std::string errorMsg;
-    ActionStatus status;
+void CreateUser::act(Session& sess){
+    User user => user
+    if letter valid => ok
+            else {
+                error(invalid )
+            }
+
 };
 
-class CreateUser  : public BaseAction {
-public:
-    virtual void act(Session& sess);
-    virtual std::string toString() const;
+std::string CreateUser::toString() const{
+    return "CreateUser " + ENUM_TO_STR(getStatus());
+
 };
-
-class ChangeActiveUser : public BaseAction {
-public:
-    virtual void act(Session& sess);
-    virtual std::string toString() const;
-};
-
-class DeleteUser : public BaseAction {
-public:
-    virtual void act(Session & sess);
-    virtual std::string toString() const;
-};
-
-
-class DuplicateUser : public BaseAction {
-public:
-    virtual void act(Session & sess);
-    virtual std::string toString() const;
-};
-
-class PrintContentList : public BaseAction {
-public:
-    virtual void act (Session& sess);
-    virtual std::string toString() const;
-};
-
-class PrintWatchHistory : public BaseAction {
-public:
-    virtual void act (Session& sess);
-    virtual std::string toString() const;
-};
-
-
-class Watch : public BaseAction {
-public:
-    virtual void act(Session& sess);
-    virtual std::string toString() const;
-};
-
-
-class PrintActionsLog : public BaseAction {
-public:
-    virtual void act(Session& sess);
-    virtual std::string toString() const;
-};
-
-class Exit : public BaseAction {
-public:
-    virtual void act(Session& sess);
-    virtual std::string toString() const;
-};
-#endif
