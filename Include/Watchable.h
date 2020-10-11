@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-
 class Session;
 
 class Watchable{
@@ -13,6 +12,12 @@ public:
     virtual ~Watchable();
     virtual std::string toString() const = 0;
     virtual Watchable* getNextWatchable(Session&) const = 0;
+    virtual std::string getSeriesName()=0;
+    virtual Watchable* copy()=0;
+    long getId() const;
+    int getLength();
+    std::vector<std::string> getTags();
+
 private:
     const long id;
     int length;
@@ -24,7 +29,8 @@ public:
     Movie(long id, const std::string& name, int length, const std::vector<std::string>& tags);
     virtual std::string toString() const;
     virtual Watchable* getNextWatchable(Session&) const;
-
+    virtual std::string getSeriesName();
+    virtual Watchable* copy();
     virtual ~Movie();
 
 private:
@@ -35,14 +41,13 @@ private:
 class Episode: public Watchable{
 public:
     Episode(long id, const std::string& seriesName,int length, int season, int episode ,const std::vector<std::string>& tags);
-
-    Episode(long id, int length, const std::vector<std::string> &tags, const std::string &seriesName, int season,
-            int episode, long nextEpisodeId);
-
     virtual std::string toString() const;
     virtual Watchable* getNextWatchable(Session&) const;
-
+    virtual std::string getSeriesName();
     virtual ~Episode();
+    int getEpisode();
+    virtual Watchable* copy();
+    void setNextEpisodeId (long id);
 
 private:
     std::string seriesName;
